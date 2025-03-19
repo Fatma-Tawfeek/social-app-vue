@@ -5,6 +5,7 @@ export default defineNuxtPlugin((nuxtApp) => {
         if (localStorage.getItem("token")) {
             const authStore = useAuthStore();
             authStore.login(localStorage.getItem("token"));
+            authStore.getUser(localStorage.getItem("token"));
         }
     });
 });

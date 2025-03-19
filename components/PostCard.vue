@@ -106,8 +106,44 @@
                     <p class="text-gray-500 text-sm">{{ comment.content }}</p>
                 </div>
             </div>
+            <!-- Comment Form -->
+            <form class="w-full max-w-xl bg-white rounded-lg px-4 pt-2" @submit.prevent="submit">
+                <div class="flex flex-wrap -mx-3 mb-6">
+                    <div class="w-full px-3 mt-2">
+                        <v-textarea
+                            label="Type Your Comment"
+                            variant="solo-filled"
+                            rows="2"
+                            v-model="content.value.value"
+                            :error-messages="content.errorMessage.value"
+                        ></v-textarea>
+                    </div>
+                    <div class="w-full md:w-full md:w-full px-3">
+                        <div class="-mr-1">
+                            <v-btn
+                                type="submit"
+                                class="text-white font-medium py-1 px-4 border border-gray-400 rounded-lg tracking-wide mr-1 hover:bg-indigo-400"
+                                color="indigo"
+                            >
+                                <span v-if="!loading">
+                                    Send Comment <v-icon class="ml-2" icon="mdi:mdi-send"></v-icon>
+                                </span>
+                                <v-icon v-else icon="fas fa-circle-notch fa-spin"></v-icon>
+                            </v-btn>
+                        </div>
+                    </div>
+                </div>
+            </form>
         </div>
     </div>
+    <!-- success message -->
+    <v-snackbar v-model="snackbar" :timeout="timeout">
+        Comment added successfully
+
+        <template v-slot:actions>
+            <v-btn color="blue" variant="text" @click="snackbar = false"> Close </v-btn>
+        </template>
+    </v-snackbar>
 </template>
 
 <script setup>
@@ -117,7 +153,46 @@ const { post } = defineProps(["post"]);
 
 const date = useDate();
 
-const formattedDate = computed(() => date.format(new Date(post.createdAt), "fullDateWithWeekday"));
+const authStore = useAuthStore();
+
+const config = useRuntimeConfig();
+
+const loading = ref(false);
+
+const snackbar = ref(false);
+const timeout = ref(3000);
+
+const formattedDate = computed(() => date.format(new Date(post?.createdAt), "fullDateWithWeekday"));
+
+// Comment
+const { handleSubmit } = useForm({
+    validationSchema: {
+        content(value) {
+            return value ? true : "Comment is required.";
+        },
+    },
+});
+const content = useField("content");
+
+const submit = handleSubmit(async (values) => {
+    loading.value = true;
+    try {
+        const res = await $fetch(`${config.public.apiBase}/comments`, {
+            method: "POST",
+            body: {
+                content: values.content,
+                post: post._id,
+            },
+            headers: { token: authStore.token },
+        });
+        snackbar.value = true;
+        content.value.value = " ";
+    } catch (error) {
+        console.log(error);
+    } finally {
+        loading.value = false;
+    }
+});
 </script>
 
 <style lang="scss" scoped></style>

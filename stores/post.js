@@ -3,7 +3,6 @@ import { defineStore } from "pinia";
 export const usePostStore = defineStore("postStore", {
     state: () => ({
         posts: [],
-        paginationInfo: {},
         loading: false,
         snackbar: false,
     }),

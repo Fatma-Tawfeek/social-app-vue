@@ -7,11 +7,7 @@
             @click="rail = false"
             color="indigo"
         >
-            <v-list-item
-                prepend-avatar="https://randomuser.me/api/portraits/men/85.jpg"
-                title="John Leider"
-                nav
-            >
+            <v-list-item :prepend-avatar="authStore.user?.photo" :title="authStore.user?.name" nav>
                 <template v-slot:append>
                     <v-btn
                         icon="mdi:mdi-chevron-left"
@@ -24,16 +20,21 @@
             <v-divider></v-divider>
 
             <v-list density="compact" nav>
-                <v-list-item
-                    prepend-icon="mdi:mdi-home-city"
-                    title="Home"
-                    value="home"
-                ></v-list-item>
-                <v-list-item
-                    prepend-icon="mdi:mdi-account"
-                    title="My Account"
-                    value="account"
-                ></v-list-item>
+                <NuxtLink to="/">
+                    <v-list-item
+                        prepend-icon="mdi:mdi-home-city"
+                        title="Home"
+                        value="home"
+                    ></v-list-item>
+                </NuxtLink>
+
+                <NuxtLink to="/profile">
+                    <v-list-item
+                        prepend-icon="mdi:mdi-account"
+                        title="My Account"
+                        value="account"
+                    ></v-list-item>
+                </NuxtLink>
                 <v-list-item
                     prepend-icon="mdi:mdi-account-group-outline"
                     title="Users"

@@ -93,7 +93,7 @@
             <!-- Comment 1 -->
             <div
                 class="flex items-center space-x-2"
-                v-for="comment in post.comments.slice(0, 2)"
+                v-for="comment in sortedComments.slice(0, 2)"
                 :key="comment._id"
             >
                 <img
@@ -162,6 +162,8 @@ const loading = ref(false);
 const snackbar = ref(false);
 const timeout = ref(3000);
 
+const comments = ref([]);
+
 const formattedDate = computed(() => date.format(new Date(post?.createdAt), "fullDateWithWeekday"));
 
 // Comment
@@ -185,6 +187,7 @@ const submit = handleSubmit(async (values) => {
             },
             headers: { token: authStore.token },
         });
+        await getPostComments();
         snackbar.value = true;
         content.value.value = " ";
     } catch (error) {
@@ -192,6 +195,27 @@ const submit = handleSubmit(async (values) => {
     } finally {
         loading.value = false;
     }
+});
+
+async function getPostComments() {
+    const token = localStorage.getItem("token");
+    try {
+        const response = await $fetch(`${config.public.apiBase}/posts/${post._id}/comments`, {
+            method: "GET",
+            headers: { token: token },
+        });
+        comments.value = response.comments;
+    } catch (error) {
+        console.error("Fetch error:", error);
+    }
+}
+
+const sortedComments = computed(() => {
+    return comments.value.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+});
+
+onMounted(() => {
+    getPostComments();
 });
 </script>
 

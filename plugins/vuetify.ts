@@ -2,6 +2,7 @@
 import "@mdi/font/css/materialdesignicons.css";
 import { aliases, fa } from "vuetify/iconsets/fa";
 import { mdi } from "vuetify/iconsets/mdi";
+import { VFileUpload } from "vuetify/labs/VFileUpload";
 
 import "vuetify/styles";
 import { createVuetify } from "vuetify";
@@ -19,6 +20,7 @@ export default defineNuxtPlugin((app) => {
         },
         components: {
             VDateInput,
+            VFileUpload,
         },
     });
     app.vueApp.use(vuetify);

@@ -51,7 +51,9 @@
             <v-btn @click="logout"> <v-icon icon="mdi:mdi-logout"></v-icon> Logout </v-btn>
         </v-app-bar>
 
-        <v-main class="d-flex align-center justify-center bg-gray-100 dark:bg-gray-900">
+        <v-main
+            class="d-flex align-center justify-center bg-gray-100 min-h-screen dark:bg-gray-900"
+        >
             <v-container>
                 <slot></slot>
             </v-container>

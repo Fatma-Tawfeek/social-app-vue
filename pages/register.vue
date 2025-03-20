@@ -139,7 +139,8 @@ const submit = handleSubmit(async (values) => {
 });
 
 definePageMeta({
-    layout: "custom",
+    layout: "auth",
+    middleware: "guest",
 });
 </script>
 

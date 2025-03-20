@@ -14,7 +14,6 @@ export default defineNuxtConfig({
     build: {
         transpile: ["vuetify"],
     },
-    plugins: ["~/plugins/auth.js"],
     modules: [
         (_options, nuxt) => {
             nuxt.hooks.hook("vite:extendConfig", (config) => {
@@ -25,6 +24,7 @@ export default defineNuxtConfig({
         "@nuxtjs/tailwindcss",
         "@vee-validate/nuxt",
         "@pinia/nuxt",
+        "pinia-plugin-persistedstate/nuxt",
         "@nuxtjs/color-mode",
     ],
     vite: {

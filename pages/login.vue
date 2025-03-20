@@ -83,8 +83,8 @@ const submit = handleSubmit(async (values) => {
             body: values,
         });
         loading.value = false;
-        authStore.login(res.token);
-        localStorage.setItem("token", res.token);
+        await localStorage.setItem("token", res.token);
+        await authStore.login(localStorage.getItem("token"));
         router.push("/");
     } catch (error) {
         errorMsg.value = error.data.error;
@@ -93,7 +93,8 @@ const submit = handleSubmit(async (values) => {
 });
 
 definePageMeta({
-    layout: "custom",
+    layout: "auth",
+    middleware: "guest",
 });
 </script>
 

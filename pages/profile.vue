@@ -94,13 +94,6 @@
                     <PostCard v-for="post in sortedPosts" :key="post.id" :post="post" />
                 </div>
                 <!-- <Pagination :paginationInfo="paginationInfo" @changePage="get" /> -->
-                <!-- success message -->
-                <v-snackbar v-model="postStore.snackbar" :timeout="timeout">
-                    Post added successfully
-                    <template v-slot:actions>
-                        <v-btn color="blue" variant="text" @click="snackbar = false"> Close </v-btn>
-                    </template>
-                </v-snackbar>
             </div>
         </div>
     </div>
@@ -112,11 +105,9 @@ import { useDate } from "vuetify";
 const authStore = useAuthStore();
 const joinDate = useDate();
 const config = useRuntimeConfig();
-const postStore = usePostStore();
 const posts = ref([]);
 const loading = ref(false);
 const paginationInfo = ref({});
-const timeout = ref(3000);
 
 onMounted(async () => {
     await getUserPosts();
@@ -124,12 +115,13 @@ onMounted(async () => {
 
 async function getUserPosts() {
     loading.value = true;
+    const token = localStorage.getItem("token");
     try {
         const response = await $fetch(
             `${config.public.apiBase}/users/${authStore.user?._id}/posts`,
             {
                 method: "GET",
-                headers: { token: authStore.token },
+                headers: { token: token },
             }
         );
         posts.value = response.posts;
@@ -147,8 +139,12 @@ const sortedPosts = computed(() => {
 const user = computed(() => authStore.user);
 const formattedJoinDate = computed(() => {
     const createdAt = authStore.user?.createdAt;
-    if (!createdAt) return "Unknown"; // أو أي رسالة افتراضية
+    if (!createdAt) return "Unknown";
     return joinDate.format(new Date(createdAt), "fullDateWithWeekday");
+});
+
+definePageMeta({
+    middleware: "auth",
 });
 </script>
 

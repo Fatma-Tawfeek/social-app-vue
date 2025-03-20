@@ -16,18 +16,23 @@
             :error-messages="image.errorMessage.value"
         ></v-file-input>
 
-        <v-btn color="indigo" type="submit" class="w-full" :disabled="postStore.loading">
-            <span v-if="!postStore.loading">
-                Post <v-icon class="ml-2" icon="mdi:mdi-send"></v-icon>
-            </span>
+        <v-btn color="indigo" type="submit" class="w-full" :disabled="loading">
+            <span v-if="!loading"> Post <v-icon class="ml-2" icon="mdi:mdi-send"></v-icon> </span>
             <v-icon v-else icon="fas fa-circle-notch fa-spin"></v-icon>
         </v-btn>
     </form>
+    <!-- success message -->
+    <v-snackbar v-model="snackbar" :timeout="timeout">
+        Post added successfully
+
+        <template v-slot:actions>
+            <v-btn color="blue" variant="text" @click="snackbar = false"> Close </v-btn>
+        </template>
+    </v-snackbar>
 </template>
 
 <script setup>
 import { useField, useForm } from "vee-validate";
-import { usePostStore } from "~/stores/post";
 
 const { handleSubmit } = useForm({
     validationSchema: {
@@ -44,10 +49,32 @@ const { handleSubmit } = useForm({
 
 const body = useField("body");
 const image = useField("image");
-const postStore = usePostStore();
+const loading = ref(false);
+const timeout = ref(3000);
+const snackbar = ref(false);
 
-const submit = handleSubmit((post) => {
-    postStore.addPost(post);
+const submit = handleSubmit(async (values) => {
+    loading.value = true;
+    const formData = new FormData();
+    formData.append("body", values.body);
+    if (values.image) {
+        formData.append("image", values.image);
+    }
+    const token = localStorage.getItem("token");
+    try {
+        const res = await $fetch(`${useRuntimeConfig().public.apiBase}/posts`, {
+            method: "POST",
+            body: formData,
+            headers: { token: token },
+        });
+        body.value.value = " ";
+        image.value.value = null;
+        snackbar.value = true;
+    } catch (error) {
+        console.log(error);
+    } finally {
+        loading.value = false;
+    }
 });
 </script>
 

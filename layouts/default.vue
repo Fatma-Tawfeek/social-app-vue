@@ -35,24 +35,20 @@
                         value="account"
                     ></v-list-item>
                 </NuxtLink>
-                <v-list-item
-                    prepend-icon="mdi:mdi-account-group-outline"
-                    title="Users"
-                    value="users"
-                ></v-list-item>
                 <!-- logout -->
-                <v-list-item
+                <!-- <v-list-item
                     prepend-icon="mdi:mdi-logout"
                     title="Logout"
                     value="logout"
                     @click="authStore.logout"
-                ></v-list-item>
+                ></v-list-item> -->
             </v-list>
         </v-navigation-drawer>
         <v-app-bar title="Social App" app>
             <v-btn @click="toggleTheme">
                 <v-icon icon="mdi:mdi-theme-light-dark"></v-icon>
             </v-btn>
+            <v-btn @click="logout"> <v-icon icon="mdi:mdi-logout"></v-icon> Logout </v-btn>
         </v-app-bar>
 
         <v-main class="d-flex align-center justify-center bg-gray-100 dark:bg-gray-900">
@@ -78,6 +74,7 @@ import { useTheme } from "vuetify";
 const theme = useTheme();
 const authStore = useAuthStore();
 const colorMode = useColorMode();
+const router = useRouter();
 
 function toggleTheme() {
     theme.global.name.value = theme.global.current.value.dark ? "light" : "dark";
@@ -87,6 +84,16 @@ function toggleTheme() {
 const drawer = ref(true);
 const rail = ref(true);
 const links = ["Home", "About Us", "Team", "Services", "Blog", "Contact Us"];
+
+const logout = () => {
+    authStore.logout();
+    localStorage.removeItem("token");
+    router.push("/login");
+};
+
+onMounted(() => {
+    authStore.getUser(localStorage.getItem("token"));
+});
 </script>
 
 <style lang="scss" scoped></style>

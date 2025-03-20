@@ -6,9 +6,9 @@ export const useAuthStore = defineStore("authStore", {
         token: null,
         isAuthenticated: false,
     }),
+    persist: true,
     actions: {
         login(token) {
-            // this.user = jwtDecode(token);s
             this.token = token;
             this.isAuthenticated = true;
         },

@@ -95,7 +95,12 @@
                     v-if="loading"
                 ></v-skeleton-loader>
                 <div class="space-y-4" v-else>
-                    <PostCard v-for="post in sortedPosts" :key="post.id" :post="post" />
+                    <PostCard
+                        v-for="post in sortedPosts"
+                        :key="post.id"
+                        :post="post"
+                        @deletePost="deletePost"
+                    />
                 </div>
                 <!-- <Pagination :paginationInfo="paginationInfo" @changePage="get" /> -->
             </div>
@@ -146,6 +151,20 @@ const formattedJoinDate = computed(() => {
     if (!createdAt) return "Unknown";
     return joinDate.format(new Date(createdAt), "fullDateWithWeekday");
 });
+
+async function deletePost(postId) {
+    try {
+        const res = await $fetch(`${config.public.apiBase}/posts/${postId}`, {
+            method: "DELETE",
+            headers: { token: authStore.token },
+        });
+        await getUserPosts();
+    } catch (error) {
+        console.log(error);
+    } finally {
+        loading.value = false;
+    }
+}
 
 definePageMeta({
     middleware: "auth",

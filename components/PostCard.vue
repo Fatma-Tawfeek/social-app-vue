@@ -12,23 +12,28 @@
             </div>
             <div class="text-gray-500 cursor-pointer">
                 <!-- Three-dot menu icon -->
-                <button class="hover:bg-gray-50 rounded-full p-1">
-                    <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        width="24"
-                        height="24"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        stroke-width="2"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                    >
-                        <circle cx="12" cy="7" r="1" />
-                        <circle cx="12" cy="12" r="1" />
-                        <circle cx="12" cy="17" r="1" />
-                    </svg>
-                </button>
+                <v-menu v-if="authStore.user._id === post.user._id">
+                    <template v-slot:activator="{ props }">
+                        <v-btn
+                            icon="mdi:mdi-dots-vertical"
+                            color="gray"
+                            variant="text"
+                            v-bind="props"
+                        ></v-btn>
+                    </template>
+
+                    <v-list>
+                        <v-list-item value="1">
+                            <v-list-item-title>
+                                <EditPost :post="post" />
+                            </v-list-item-title>
+                        </v-list-item>
+
+                        <v-list-item value="2" @click="$emit('deletePost', post.id)">
+                            <v-list-item-title>Delete</v-list-item-title>
+                        </v-list-item>
+                    </v-list>
+                </v-menu>
             </div>
         </div>
         <!-- Message -->
@@ -174,6 +179,7 @@ const { handleSubmit } = useForm({
         },
     },
 });
+
 const content = useField("content");
 
 const submit = handleSubmit(async (values) => {
@@ -213,6 +219,8 @@ async function getPostComments() {
 const sortedComments = computed(() => {
     return comments.value.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
 });
+
+defineEmits(["deletePost"]);
 
 onMounted(() => {
     getPostComments();

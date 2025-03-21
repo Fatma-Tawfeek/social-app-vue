@@ -17,9 +17,11 @@
                             <v-list-item-title>Change Profile Picture</v-list-item-title>
                         </v-list-item>
                     </NuxtLink>
-                    <v-list-item value="2">
-                        <v-list-item-title>Change Password</v-list-item-title>
-                    </v-list-item>
+                    <NuxtLink to="/change-password">
+                        <v-list-item value="2">
+                            <v-list-item-title>Change Password</v-list-item-title>
+                        </v-list-item>
+                    </NuxtLink>
                 </v-list>
             </v-menu>
         </div>

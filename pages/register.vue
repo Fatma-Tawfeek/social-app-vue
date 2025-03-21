@@ -98,7 +98,9 @@ const { handleSubmit, resetForm } = useForm({
             /^[a-z0-9.-]+@[a-z0-9.-]+\.[a-z]+$/i.test(value) ? true : "Must be a valid e-mail.",
         gender: (value) => (value ? true : "Select an item."),
         password: (value) =>
-            value?.length >= 8 ? true : "Password needs to be at least 8 characters.",
+            /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/.test(value)
+                ? true
+                : "Password must be at least 8 characters long and include at least one uppercase letter, one lowercase letter, one number, and one special character (#?!@$%^&*-).",
         rePassword: (value) => {
             if (value != password.value.value) {
                 return "Password doesn't match";

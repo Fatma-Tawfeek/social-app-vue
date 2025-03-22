@@ -190,8 +190,6 @@ const date = useDate();
 
 const authStore = useAuthStore();
 
-const config = useRuntimeConfig();
-
 const loading = ref(false);
 
 const snackbar = ref(false);
@@ -215,7 +213,7 @@ const content = useField("content");
 const submit = handleSubmit(async (values) => {
     loading.value = true;
     try {
-        const res = await $fetch(`${config.public.apiBase}/comments`, {
+        const res = await $fetch(`https://linked-posts.routemisr.com/comments`, {
             method: "POST",
             body: {
                 content: values.content,
@@ -236,10 +234,13 @@ const submit = handleSubmit(async (values) => {
 async function getPostComments() {
     const token = localStorage.getItem("token");
     try {
-        const response = await $fetch(`${config.public.apiBase}/posts/${post._id}/comments`, {
-            method: "GET",
-            headers: { token: token },
-        });
+        const response = await $fetch(
+            `https://linked-posts.routemisr.com/posts/${post._id}/comments`,
+            {
+                method: "GET",
+                headers: { token: token },
+            }
+        );
         comments.value = response.comments;
     } catch (error) {
         console.error("Fetch error:", error);
@@ -248,7 +249,7 @@ async function getPostComments() {
 
 async function deleteComment(commentId) {
     try {
-        const res = await $fetch(`${config.public.apiBase}/comments/${commentId}`, {
+        const res = await $fetch(`https://linked-posts.routemisr.com/comments/${commentId}`, {
             method: "DELETE",
             headers: { token: authStore.token },
         });

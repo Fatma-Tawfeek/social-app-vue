@@ -70,7 +70,7 @@ const { handleSubmit, resetForm } = useForm({
 
 const email = useField("email");
 const password = useField("password");
-const config = useRuntimeConfig();
+
 const router = useRouter();
 const errorMsg = ref("");
 const authStore = useAuthStore();
@@ -78,7 +78,7 @@ const authStore = useAuthStore();
 const submit = handleSubmit(async (values) => {
     loading.value = true;
     try {
-        const res = await $fetch(`${config.public.apiBase}/users/signin`, {
+        const res = await $fetch(`https://linked-posts.routemisr.com/users/signin`, {
             method: "POST",
             body: values,
         });

@@ -34,7 +34,7 @@
 
 <script setup>
 const authStore = useAuthStore();
-const config = useRuntimeConfig();
+
 const loading = ref(false);
 const errorMsg = ref("");
 
@@ -58,7 +58,7 @@ const submit = handleSubmit(async (values) => {
     const formData = new FormData();
     formData.append("photo", values.photo);
     try {
-        const res = await $fetch(`${config.public.apiBase}/users/upload-photo`, {
+        const res = await $fetch(`https://linked-posts.routemisr.com/users/upload-photo`, {
             method: "PUT",
             body: formData,
             headers: { token: authStore.token },

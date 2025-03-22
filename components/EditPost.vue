@@ -45,7 +45,7 @@
 
 <script setup>
 const { post } = defineProps(["post"]);
-const config = useRuntimeConfig();
+
 const loading = ref(false);
 const dialog = ref(false);
 const authStore = useAuthStore();
@@ -74,7 +74,7 @@ const editPost = handleSubmit(async (values) => {
         formData.append("image", values.image);
     }
     try {
-        const res = await $fetch(`${config.public.apiBase}/posts/${post._id}`, {
+        const res = await $fetch(`https://linked-posts.routemisr.com/posts/${post._id}`, {
             method: "PUT",
             body: formData,
             headers: { token: authStore.token },

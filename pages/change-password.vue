@@ -52,7 +52,7 @@
 
 <script setup>
 const authStore = useAuthStore();
-const config = useRuntimeConfig();
+
 const loading = ref(false);
 const errorMsg = ref("");
 const timeout = ref(3000);
@@ -79,7 +79,7 @@ const newPassword = useField("newPassword");
 const submit = handleSubmit(async (values) => {
     loading.value = true;
     try {
-        const res = await $fetch(`${config.public.apiBase}/users/change-password`, {
+        const res = await $fetch(`https://linked-posts.routemisr.com/users/change-password`, {
             method: "PATCH",
             body: values,
             headers: { token: authStore.token },

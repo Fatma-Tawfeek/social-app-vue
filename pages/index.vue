@@ -13,7 +13,6 @@
 </template>
 
 <script setup>
-const config = useRuntimeConfig();
 const posts = ref([]);
 const loading = ref(false);
 const paginationInfo = ref({});
@@ -26,7 +25,7 @@ async function changePage(page = 1) {
     loading.value = true;
     const token = localStorage.getItem("token");
     try {
-        const response = await $fetch(`${config.public.apiBase}/posts?page=${page}`, {
+        const response = await $fetch(`https://linked-posts.routemisr.com/posts?page=${page}`, {
             method: "GET",
             headers: { token: token },
         });

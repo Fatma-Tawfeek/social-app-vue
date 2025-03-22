@@ -121,14 +121,14 @@ const rePassword = useField("rePassword");
 const dateOfBirth = useField("dateOfBirth");
 const gender = useField("gender");
 const items = ref(["male", "female"]);
-const config = useRuntimeConfig();
+
 const router = useRouter();
 const errorMsg = ref("");
 
 const submit = handleSubmit(async (values) => {
     loading.value = true;
     try {
-        const res = await $fetch(`${config.public.apiBase}/users/signup`, {
+        const res = await $fetch(`https://linked-posts.routemisr.com/users/signup`, {
             method: "POST",
             body: values,
         });

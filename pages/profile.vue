@@ -113,7 +113,7 @@ import { useDate } from "vuetify";
 
 const authStore = useAuthStore();
 const joinDate = useDate();
-const config = useRuntimeConfig();
+
 const posts = ref([]);
 const loading = ref(false);
 const paginationInfo = ref({});
@@ -127,7 +127,7 @@ async function getUserPosts() {
     const token = localStorage.getItem("token");
     try {
         const response = await $fetch(
-            `${config.public.apiBase}/users/${authStore.user?._id}/posts`,
+            `https://linked-posts.routemisr.com/users/${authStore.user?._id}/posts`,
             {
                 method: "GET",
                 headers: { token: token },
@@ -154,7 +154,7 @@ const formattedJoinDate = computed(() => {
 
 async function deletePost(postId) {
     try {
-        const res = await $fetch(`${config.public.apiBase}/posts/${postId}`, {
+        const res = await $fetch(`https://linked-posts.routemisr.com/posts/${postId}`, {
             method: "DELETE",
             headers: { token: authStore.token },
         });

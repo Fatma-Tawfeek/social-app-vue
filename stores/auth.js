@@ -18,13 +18,10 @@ export const useAuthStore = defineStore("authStore", {
         },
         async getUser(token) {
             try {
-                const res = await $fetch(
-                    `${useRuntimeConfig().public.apiBase}/users/profile-data`,
-                    {
-                        method: "GET",
-                        headers: { token: token },
-                    }
-                );
+                const res = await $fetch(`https://linked-posts.routemisr.com/users/profile-data`, {
+                    method: "GET",
+                    headers: { token: token },
+                });
                 this.user = res.user;
             } catch (error) {
                 console.log(error);

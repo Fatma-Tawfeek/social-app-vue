@@ -41,7 +41,11 @@ export default defineNuxtConfig({
             title: "Social App",
             meta: [{ name: "description", content: "Nuxt 3 + Vuetify 3" }],
             link: [
-                { rel: "icon", type: "image/x-icon", href: "/favicon.ico" },
+                {
+                    rel: "icon",
+                    type: "image/x-icon",
+                    href: "/favicon.ico",
+                },
                 {
                     rel: "stylesheet",
                     href: "https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap",

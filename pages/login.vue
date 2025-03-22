@@ -1,6 +1,9 @@
 <template>
-    <div class="flex min-h-screen">
-        <div class="form basis-1/2 px-10 flex flex-col justify-center">
+    <div class="flex flex-col md:flex-row min-h-screen">
+        <div
+            class="image py-20 md:py-0 basis-1/2 bg-[url('@/assets/images/people.jpg')] bg-center bg-cover"
+        ></div>
+        <div class="form basis-1/2 px-10 pt-10 md:pt-0 flex flex-col justify-center">
             <h1 class="text-3xl font-bold text-center mb-4">Login</h1>
             <v-alert
                 type="error"
@@ -44,9 +47,6 @@
                 <NuxtLink to="/register" class="text-indigo-500 underline">Register</NuxtLink>
             </div>
         </div>
-        <div
-            class="image basis-1/2 bg-[url('@/assets/images/people.jpg')] bg-center bg-cover"
-        ></div>
     </div>
 </template>
 

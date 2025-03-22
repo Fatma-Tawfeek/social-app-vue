@@ -29,8 +29,12 @@
                             </v-list-item-title>
                         </v-list-item>
 
-                        <v-list-item value="2" @click="$emit('deletePost', post.id)">
-                            <v-list-item-title>Delete</v-list-item-title>
+                        <v-list-item
+                            value="2"
+                            class="text-center text-black"
+                            @click="$emit('deletePost', post.id)"
+                        >
+                            <v-list-item-title class="text-uppercase">Delete</v-list-item-title>
                         </v-list-item>
                     </v-list>
                 </v-menu>
@@ -101,14 +105,40 @@
                 v-for="comment in sortedComments.slice(0, 2)"
                 :key="comment._id"
             >
-                <img
-                    src="@/assets/images/user.png"
-                    alt="User Avatar"
-                    class="w-6 h-6 rounded-full"
-                />
-                <div>
-                    <p class="text-gray-800 font-semibold">{{ comment.commentCreator.name }}</p>
-                    <p class="text-gray-500 text-sm">{{ comment.content }}</p>
+                <div class="flex justify-between">
+                    <div class="flex items-center space-x-2">
+                        <img
+                            src="@/assets/images/user.png"
+                            alt="User Avatar"
+                            class="w-6 h-6 rounded-full"
+                        />
+                        <div>
+                            <p class="text-gray-800 font-semibold">
+                                {{ comment.commentCreator.name }}
+                            </p>
+                            <p class="text-gray-500 text-sm">{{ comment.content }}</p>
+                        </div>
+                    </div>
+                    <v-menu v-if="authStore.user._id === post.user._id">
+                        <template v-slot:activator="{ props }">
+                            <v-btn
+                                icon="mdi:mdi-dots-vertical"
+                                color="gray"
+                                variant="text"
+                                v-bind="props"
+                            ></v-btn>
+                        </template>
+
+                        <v-list>
+                            <v-list-item
+                                value="2"
+                                class="text-center text-black"
+                                @click="deleteComment(comment._id)"
+                            >
+                                <v-list-item-title class="text-uppercase">Delete</v-list-item-title>
+                            </v-list-item>
+                        </v-list>
+                    </v-menu>
                 </div>
             </div>
             <!-- Comment Form -->
@@ -213,6 +243,18 @@ async function getPostComments() {
         comments.value = response.comments;
     } catch (error) {
         console.error("Fetch error:", error);
+    }
+}
+
+async function deleteComment(commentId) {
+    try {
+        const res = await $fetch(`${config.public.apiBase}/comments/${commentId}`, {
+            method: "DELETE",
+            headers: { token: authStore.token },
+        });
+        await getPostComments();
+    } catch (error) {
+        console.log(error);
     }
 }
 
